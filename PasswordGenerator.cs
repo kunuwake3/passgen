@@ -13,7 +13,8 @@ namespace TrayPassGen
         private static readonly char[] Special = "!@#$%^&*()-_=+[]{};:,.<>/?".ToCharArray();
         public static readonly char[] SafeSymbols = "_-+=!@#.".ToCharArray();
 
-        public static string Generate(int length, bool lower, bool upper, bool digits, bool special, char[] customSpecial = null)
+        public static string Generate(int length, bool lower, bool upper, bool digits, bool special, char[]? customSpecial = null)
+
         {
             if (length < 4) throw new ArgumentOutOfRangeException(nameof(length), "Минимум 4 символа.");
 
