@@ -1,0 +1,10 @@
+bin/
+obj/
+*.user
+*.suo
+*.userprefs
+*.vcxproj.*
+*.psess
+.vscode/
+.vs/
+*.log
