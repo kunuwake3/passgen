@@ -13,7 +13,7 @@ namespace TrayPassGen.Properties
     {
         private static ResourceManager resourceMan;
         private static CultureInfo resourceCulture;
-        private static System.Globalization.CultureInfo resourceCulture;
+        /// private static System.Globalization.CultureInfo resourceCulture;
         private Resources() { }
 
         private static ResourceManager ResourceManager =>
