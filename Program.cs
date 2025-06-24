@@ -1,4 +1,5 @@
 using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace TrayPassGen
@@ -26,7 +27,7 @@ namespace TrayPassGen
 
             _trayIcon = new NotifyIcon
             {
-                Icon = Properties.Resources.TrayIcon,
+                Icon = new Icon("PassGen.ico"),
                 Text = "TrayPassGen – генератор паролей",
                 ContextMenuStrip = menu,
                 Visible = true
@@ -41,14 +42,20 @@ namespace TrayPassGen
 
         private void GenerateAndCopy()
         {
+            // Выбор символов для генерации
+            char[]? symbols = null;
+            if (Properties.Settings.Default.UseSafeSymbols)
+                symbols = PasswordGenerator.SafeSymbols;
+            else if (!Properties.Settings.Default.IncludeSpecialChars)
+                symbols = Array.Empty<char>();
+
             string password = PasswordGenerator.Generate(
                 Properties.Settings.Default.PasswordLength,
                 Properties.Settings.Default.IncludeLowercase,
                 Properties.Settings.Default.IncludeUppercase,
                 Properties.Settings.Default.IncludeDigits,
-                Properties.Settings.Default.UseSafeSymbols
-                    ? PasswordGenerator.SafeSymbols
-                    : Properties.Settings.Default.IncludeSpecialChars
+                Properties.Settings.Default.IncludeSpecialChars || Properties.Settings.Default.UseSafeSymbols,
+                symbols
             );
 
             password = Properties.Settings.Default.StaticPrefix + password;
