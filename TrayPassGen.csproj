@@ -33,9 +33,6 @@
     </Compile>
   </ItemGroup>
 
-  <!-- ресурс-файл с иконкой (если используешь Resources.resx) -->
-  <ItemGroup>
-    <EmbeddedResource Include="Properties\\Resources.resx" />
-  </ItemGroup>
+
 
 </Project>
