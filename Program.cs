@@ -27,7 +27,7 @@ namespace TrayPassGen
 
             _trayIcon = new NotifyIcon
             {
-                Icon = new Icon("PassGen.ico"),
+               Icon = Properties.Resources.PassGen,
                 Text = "TrayPassGen – генератор паролей",
                 ContextMenuStrip = menu,
                 Visible = true
