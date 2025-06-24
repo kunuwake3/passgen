@@ -44,7 +44,7 @@ namespace TrayPassGen
             tbPrefix  = new TextBox { Anchor = AnchorStyles.Left | AnchorStyles.Right };
 
             // ───── кнопка ─────
-            btnSave = new Button { Text = "Сохранить", Anchor = AnchorStyles.Right, Width = 100 };
+            btnSave = new Button { Text = "Сохранить", Anchor = AnchorStyles.Right, Width = 80 };
             btnSave.Click += btnSave_Click;
 
             // ───── размещение в таблице ─────
@@ -65,12 +65,12 @@ namespace TrayPassGen
             layout.RowStyles.Add(new RowStyle());
             layout.RowStyles.Add(new RowStyle());
             layout.RowStyles.Add(new RowStyle());
-            layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 40)); // для кнопки
+            layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 60)); // для кнопки
 
             // ───── сама форма ─────
             AutoScaleMode = AutoScaleMode.Dpi;
             ClientSize    = new Size(860, 440);
-            MinimumSize   = new Size(6860, 440);
+            MinimumSize   = new Size(860, 440);
             Controls.Add(layout);
             Text = "Настройки генератора";
             StartPosition = FormStartPosition.CenterScreen;
