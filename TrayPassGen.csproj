@@ -5,18 +5,30 @@
     <TargetFramework>net8.0-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
 
+    <!-- публикация одним файлом -->
     <PublishSingleFile>true</PublishSingleFile>
     <SelfContained>true</SelfContained>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <PublishTrimmed>false</PublishTrimmed>
 
+    <!-- системная иконка EXE -->
     <ApplicationIcon>PassGen.ico</ApplicationIcon>
+
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <!-- подключаем Settings.settings -->
   <ItemGroup>
-    <EmbeddedResource Include="PassGen.ico" />
-  </ItemGroup>
+    <None Update="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
 
+    <Compile Update="Properties\Settings.Designer.cs">
+      <DesignTimeSharedInput>true</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
 </Project>
+
