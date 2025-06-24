@@ -1,96 +1,104 @@
+using System.Drawing;
+using System.Windows.Forms;
+
 namespace TrayPassGen
 {
     partial class SettingsForm
     {
         private System.ComponentModel.IContainer components = null;
-        private System.Windows.Forms.CheckBox cbLower;
-        private System.Windows.Forms.CheckBox cbUpper;
-        private System.Windows.Forms.CheckBox cbDigits;
-        private System.Windows.Forms.CheckBox cbSpecial;
-        private System.Windows.Forms.CheckBox cbSafeSymbols;
-        private System.Windows.Forms.NumericUpDown nudLength;
-        private System.Windows.Forms.TextBox tbPrefix;
-        private System.Windows.Forms.Button btnSave;
-        private System.Windows.Forms.Label labelLength;
-        private System.Windows.Forms.Label labelPrefix;
+        private CheckBox cbLower;
+        private CheckBox cbUpper;
+        private CheckBox cbDigits;
+        private CheckBox cbSpecial;
+        private CheckBox cbSafeSymbols;
+        private NumericUpDown nudLength;
+        private TextBox tbPrefix;
+        private Button btnSave;
+        private Label labelLength;
+        private Label labelPrefix;
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null))
+            if (disposing && components != null)
                 components.Dispose();
             base.Dispose(disposing);
         }
 
         private void InitializeComponent()
         {
-            cbLower = new System.Windows.Forms.CheckBox();
-            cbUpper = new System.Windows.Forms.CheckBox();
-            cbDigits = new System.Windows.Forms.CheckBox();
-            cbSpecial = new System.Windows.Forms.CheckBox();
-            cbSafeSymbols = new System.Windows.Forms.CheckBox();
-            nudLength = new System.Windows.Forms.NumericUpDown();
-            tbPrefix = new System.Windows.Forms.TextBox();
-            btnSave = new System.Windows.Forms.Button();
-            labelLength = new System.Windows.Forms.Label();
-            labelPrefix = new System.Windows.Forms.Label();
+            cbLower      = new CheckBox();
+            cbUpper      = new CheckBox();
+            cbDigits     = new CheckBox();
+            cbSpecial    = new CheckBox();
+            cbSafeSymbols = new CheckBox();
+            nudLength    = new NumericUpDown();
+            tbPrefix     = new TextBox();
+            btnSave      = new Button();
+            labelLength  = new Label();
+            labelPrefix  = new Label();
 
             ((System.ComponentModel.ISupportInitialize)(nudLength)).BeginInit();
             SuspendLayout();
 
-            // Чекбоксы
+            // ───── Чекбоксы ───────────────────────────────────────────────────
             cbLower.Text = "Строчные буквы (a-z)";
-            cbLower.Location = new System.Drawing.Point(12, 12);
+            cbLower.Location = new Point(12, 12);
             cbLower.AutoSize = true;
 
             cbUpper.Text = "Заглавные буквы (A-Z)";
-            cbUpper.Location = new System.Drawing.Point(12, 35);
+            cbUpper.Location = new Point(12, 35);
             cbUpper.AutoSize = true;
 
             cbDigits.Text = "Цифры (0-9)";
-            cbDigits.Location = new System.Drawing.Point(12, 58);
+            cbDigits.Location = new Point(12, 58);
             cbDigits.AutoSize = true;
 
             cbSpecial.Text = "Спецсимволы (!@#$)";
-            cbSpecial.Location = new System.Drawing.Point(12, 81);
+            cbSpecial.Location = new Point(12, 81);
             cbSpecial.AutoSize = true;
 
             cbSafeSymbols.Text = "Только безопасные спецсимволы (_-+=!@#.)";
-            cbSafeSymbols.Location = new System.Drawing.Point(12, 104);
+            cbSafeSymbols.Location = new Point(12, 104);
             cbSafeSymbols.AutoSize = true;
 
-            // Длина
+            // ───── Длина ─────────────────────────────────────────────────────
             labelLength.Text = "Длина пароля:";
-            labelLength.Location = new System.Drawing.Point(12, 135);
+            labelLength.Location = new Point(12, 135);
             labelLength.AutoSize = true;
 
-            nudLength.Location = new System.Drawing.Point(120, 133);
-            nudLength.Minimum = 4;
-            nudLength.Maximum = 128;
-            nudLength.Value = 16;
+            nudLength.Location = new Point(120, 133);
+            nudLength.Minimum  = 4;
+            nudLength.Maximum  = 128;
+            nudLength.Value    = 16;               // после Min/Max!
+            nudLength.Anchor   = AnchorStyles.Top | AnchorStyles.Left;
+            nudLength.Validating += nudLength_Validating;
 
-            // Префикс
+            // ───── Префикс ───────────────────────────────────────────────────
             labelPrefix.Text = "Префикс:";
-            labelPrefix.Location = new System.Drawing.Point(12, 162);
+            labelPrefix.Location = new Point(12, 162);
             labelPrefix.AutoSize = true;
 
-            tbPrefix.Location = new System.Drawing.Point(120, 159);
-            tbPrefix.Width = 140;
+            tbPrefix.Location = new Point(120, 159);
+            tbPrefix.Width    = 230;
+            tbPrefix.Anchor   = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
 
-            // Сохранить
+            // ───── Кнопка Сохранить ─────────────────────────────────────────
             btnSave.Text = "Сохранить";
-            btnSave.Location = new System.Drawing.Point(90, 195);
-            btnSave.Click += new System.EventHandler(btnSave_Click);
+            btnSave.Size = new Size(90, 30);
+            btnSave.Location = new Point(275, 245);
+            btnSave.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnSave.Click += btnSave_Click;
 
-            // Форма
-            ClientSize = new System.Drawing.Size(300, 240);
+            // ───── Форма ─────────────────────────────────────────────────────
+            AutoScaleMode = AutoScaleMode.Dpi;
+            ClientSize    = new Size(380, 300);
+            MinimumSize   = new Size(380, 300);
             Controls.AddRange(new Control[]
             {
                 cbLower, cbUpper, cbDigits, cbSpecial, cbSafeSymbols,
-                labelLength, nudLength, labelPrefix, tbPrefix,
-                btnSave
+                labelLength, nudLength, labelPrefix, tbPrefix, btnSave
             });
-
-            FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            FormBorderStyle = FormBorderStyle.FixedDialog;
             MaximizeBox = false;
             MinimizeBox = false;
             Text = "Настройки генератора";
@@ -99,6 +107,17 @@ namespace TrayPassGen
             ((System.ComponentModel.ISupportInitialize)(nudLength)).EndInit();
             ResumeLayout(false);
             PerformLayout();
+        }
+
+        // ───── Проверка поля длины ──────────────────────────────────────────
+        private void nudLength_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (nudLength.Value < 4 || nudLength.Value > 128)
+            {
+                e.Cancel = true;
+                MessageBox.Show("Длина пароля должна быть от 4 до 128 символов.",
+                                "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
     }
 }
