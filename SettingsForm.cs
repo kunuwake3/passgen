@@ -10,6 +10,7 @@ namespace TrayPassGen
             InitializeComponent();
 
             // Загрузка текущих настроек
+            AutoScaleMode = AutoScaleMode.Dpi;
             cbLower.Checked = Properties.Settings.Default.IncludeLowercase;
             cbUpper.Checked = Properties.Settings.Default.IncludeUppercase;
             cbDigits.Checked = Properties.Settings.Default.IncludeDigits;
