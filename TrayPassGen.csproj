@@ -1,17 +1,41 @@
-<PropertyGroup>
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <!-- основные параметры -->
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+
+    <!-- публикация одним файлом -->
     <PublishSingleFile>true</PublishSingleFile>
     <SelfContained>true</SelfContained>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <PublishTrimmed>false</PublishTrimmed>
+
+    <!-- иконка PE-файла -->
+    <ApplicationIcon>PassGen.ico</ApplicationIcon>
+
+    <!-- общие настройки кода -->
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <!-- подключаем Settings.settings -> авто-Designer -->
   <ItemGroup>
     <None Update="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+
     <Compile Update="Properties\Settings.Designer.cs">
       <DesignTimeSharedInput>true</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
   </ItemGroup>
+
+  <!-- ресурс-файл с иконкой (если используешь Resources.resx) -->
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\\Resources.resx" />
+  </ItemGroup>
+
+</Project>
