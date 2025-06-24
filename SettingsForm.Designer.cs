@@ -5,101 +5,75 @@ namespace TrayPassGen
 {
     partial class SettingsForm
     {
+        private TableLayoutPanel layout;
+        private CheckBox cbLower, cbUpper, cbDigits, cbSpecial, cbSafeSymbols;
         private NumericUpDown nudLength;
-        private TextBox       tbPrefix;
-        private CheckBox      cbLower;
-        private CheckBox      cbUpper;
-        private CheckBox      cbDigits;
-        private CheckBox      cbSpecial;
-        private CheckBox      cbSafeSymbols;
-        private Button        btnSave;
-        private Label         labelLength;
-        private Label         labelPrefix;
+        private TextBox tbPrefix;
+        private Button btnSave;
+        private Label lblLength, lblPrefix;
 
         private void InitializeComponent()
         {
-            nudLength      = new NumericUpDown();
-            tbPrefix       = new TextBox();
-            cbLower        = new CheckBox();
-            cbUpper        = new CheckBox();
-            cbDigits       = new CheckBox();
-            cbSpecial      = new CheckBox();
-            cbSafeSymbols  = new CheckBox();
-            btnSave        = new Button();
-            labelLength    = new Label();
-            labelPrefix    = new Label();
-            ((System.ComponentModel.ISupportInitialize)(nudLength)).BeginInit();
-            SuspendLayout();
+            // ───── макет 2-колоночный, авто-строки ─────
+            layout = new TableLayoutPanel {
+                Dock       = DockStyle.Fill,
+                ColumnCount= 2,
+                Padding    = new Padding(20, 15, 20, 15),
+                AutoSize   = true
+            };
+            layout.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
+            layout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
 
-            // ─── Чекбоксы ──────────────────────────────────────────────
-            cbLower.Text     = "Строчные буквы (a-z)";
-            cbLower.Location = new Point(14, 14);
-            cbLower.AutoSize = true;
+            // ───── чекбоксы ─────
+            cbLower       = new CheckBox { Text = "Строчные буквы (a-z)",   AutoSize = true };
+            cbUpper       = new CheckBox { Text = "Заглавные буквы (A-Z)",  AutoSize = true };
+            cbDigits      = new CheckBox { Text = "Цифры (0-9)",           AutoSize = true };
+            cbSpecial     = new CheckBox { Text = "Спецсимволы (!@#$)",    AutoSize = true };
+            cbSafeSymbols = new CheckBox { Text = "Только безопасные спецсимволы (_-+=!@#.)", AutoSize = true };
 
-            cbUpper.Text     = "Заглавные буквы (A-Z)";
-            cbUpper.Location = new Point(14, 39);
-            cbUpper.AutoSize = true;
-
-            cbDigits.Text     = "Цифры (0-9)";
-            cbDigits.Location = new Point(14, 64);
-            cbDigits.AutoSize = true;
-
-            cbSpecial.Text     = "Спецсимволы (!@#$)";
-            cbSpecial.Location = new Point(14, 89);
-            cbSpecial.AutoSize = true;
-
-            cbSafeSymbols.Text     = "Только безопасные спецсимволы (_-+=!@#.)";
-            cbSafeSymbols.Location = new Point(14, 114);
-            cbSafeSymbols.AutoSize = true;
-
-            // ─── Длина пароля ──────────────────────────────────────────
-            labelLength.Text     = "Длина пароля:";
-            labelLength.Location = new Point(14, 151);
-            labelLength.AutoSize = true;
-
-            nudLength.Location = new Point(125, 149);
-            nudLength.Size     = new Size(60, 23);
-            nudLength.Minimum  = 4;
-            nudLength.Maximum  = 128;
-            nudLength.Value    = 16;
-            nudLength.Anchor   = AnchorStyles.Top | AnchorStyles.Left;
+            // ───── длина пароля ─────
+            lblLength  = new Label { Text = "Длина пароля:", AutoSize = true, Anchor = AnchorStyles.Left };
+            nudLength  = new NumericUpDown {
+                Minimum = 4, Maximum = 128, Value = 16,
+                Width = 80, Anchor = AnchorStyles.Left
+            };
             nudLength.Validating += nudLength_Validating;
 
-            // ─── Префикс ───────────────────────────────────────────────
-            labelPrefix.Text     = "Префикс:";
-            labelPrefix.Location = new Point(14, 183);
-            labelPrefix.AutoSize = true;
+            // ───── префикс ─────
+            lblPrefix = new Label { Text = "Префикс:", AutoSize = true, Anchor = AnchorStyles.Left };
+            tbPrefix  = new TextBox { Anchor = AnchorStyles.Left | AnchorStyles.Right };
 
-            tbPrefix.Location = new Point(125, 180);
-            tbPrefix.Size     = new Size(260, 23);
-            tbPrefix.Anchor   = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-
-            // ─── Кнопка Сохранить ─────────────────────────────────────
-            btnSave.Text   = "Сохранить";
-            btnSave.Size   = new Size(90, 30);
-            btnSave.Location = new Point(295, 260);
-            btnSave.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            // ───── кнопка ─────
+            btnSave = new Button { Text = "Сохранить", Anchor = AnchorStyles.Right, Width = 100 };
             btnSave.Click += btnSave_Click;
 
-            // ─── Форма ────────────────────────────────────────────────
-            AutoScaleMode = AutoScaleMode.Dpi;
-            ClientSize    = new Size(420, 320);
-            MinimumSize   = new Size(420, 320);
-            Controls.AddRange(new Control[]
-            {
-                cbLower, cbUpper, cbDigits, cbSpecial, cbSafeSymbols,
-                labelLength, nudLength, labelPrefix, tbPrefix, btnSave
-            });
-            Font            = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            FormBorderStyle = FormBorderStyle.FixedDialog;
-            MaximizeBox     = false;
-            MinimizeBox     = false;
-            StartPosition   = FormStartPosition.CenterScreen;
-            Text            = "Настройки генератора";
+            // ───── размещение в таблице ─────
+            layout.Controls.Add(cbLower,        0, 0); layout.SetColumnSpan(cbLower, 2);
+            layout.Controls.Add(cbUpper,        0, 1); layout.SetColumnSpan(cbUpper, 2);
+            layout.Controls.Add(cbDigits,       0, 2); layout.SetColumnSpan(cbDigits, 2);
+            layout.Controls.Add(cbSpecial,      0, 3); layout.SetColumnSpan(cbSpecial, 2);
+            layout.Controls.Add(cbSafeSymbols,  0, 4); layout.SetColumnSpan(cbSafeSymbols, 2);
 
-            ((System.ComponentModel.ISupportInitialize)(nudLength)).EndInit();
-            ResumeLayout(false);
-            PerformLayout();
+            layout.Controls.Add(lblLength, 0, 5); layout.Controls.Add(nudLength, 1, 5);
+            layout.Controls.Add(lblPrefix, 0, 6); layout.Controls.Add(tbPrefix,  1, 6);
+
+            layout.Controls.Add(btnSave,  1, 7);
+            layout.RowStyles.Add(new RowStyle()); // авто для всех строк
+            layout.RowStyles.Add(new RowStyle());
+            layout.RowStyles.Add(new RowStyle());
+            layout.RowStyles.Add(new RowStyle());
+            layout.RowStyles.Add(new RowStyle());
+            layout.RowStyles.Add(new RowStyle());
+            layout.RowStyles.Add(new RowStyle());
+            layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 40)); // для кнопки
+
+            // ───── сама форма ─────
+            AutoScaleMode = AutoScaleMode.Dpi;
+            ClientSize    = new Size(860, 440);
+            MinimumSize   = new Size(6860, 440);
+            Controls.Add(layout);
+            Text = "Настройки генератора";
+            StartPosition = FormStartPosition.CenterScreen;
         }
     }
 }
