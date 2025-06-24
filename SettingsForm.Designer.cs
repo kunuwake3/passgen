@@ -44,7 +44,13 @@ namespace TrayPassGen
             tbPrefix  = new TextBox { Anchor = AnchorStyles.Left | AnchorStyles.Right };
 
             // ───── кнопка ─────
-            btnSave = new Button { Text = "Сохранить", Anchor = AnchorStyles.Right, Width = 80 };
+            btnSave = new Button
+            {
+                Text         = "Сохранить",
+                AutoSize     = true,                       // ширина под текст
+                AutoSizeMode = AutoSizeMode.GrowAndShrink,
+                Anchor       = AnchorStyles.Right
+            };
             btnSave.Click += btnSave_Click;
 
             // ───── размещение в таблице ─────
