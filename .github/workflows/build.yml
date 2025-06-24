@@ -14,20 +14,27 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
 
-    - name: Setup .NET
+    - name: Setup .NET 8.x
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: '8.0.x'
+        dotnet-version: 8.0.x
 
-    - name: Restore
-      run: dotnet restore
+    # publish сам вызовет restore, поэтому отдельный шаг можно опустить
+    - name: Publish self-contained single-file
+      run: >
+        dotnet publish TrayPassGen.csproj
+        -c Release
+        -r win-x64
+        -p:PublishSingleFile=true
+        -p:SelfContained=true
+        -p:PublishTrimmed=false
+        -p:IncludeNativeLibrariesForSelfExtract=false   # чтобы не раскладывал native-dll рядом
+        --nologo
 
-    - name: Publish
-      run: dotnet publish TrayPassGen.csproj -c Release -r win-x64 --self-contained true /p:PublishSingleFile=true /p:PublishTrimmed=false
-
-    - name: Upload Artifact
+    # Загружаем **только** EXE (+ ICO, если копируешь её рядом)
+    - name: Upload artefact
       uses: actions/upload-artifact@v4
       with:
         name: TrayPassGen
         path: |
-          **/bin/Release/net8.0-windows/win-x64/publish/*
+          **/bin/Release/net8.0-windows/win-x64/publish/TrayPassGen.exe
