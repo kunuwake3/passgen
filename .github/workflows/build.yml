@@ -5,33 +5,41 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: windows-latest
 
     steps:
+    # 1. Клонируем репозиторий
     - name: Checkout
       uses: actions/checkout@v4
 
+    # 2. Устанавливаем .NET SDK 8.x
     - name: Setup .NET 8.x
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
 
-    # publish сам вызовет restore, поэтому отдельный шаг можно опустить
-    - name: Publish self-contained single-file
-      run: >
-        dotnet publish TrayPassGen.csproj
-        -c Release
-        -r win-x64
-        -p:PublishSingleFile=true
-        -p:SelfContained=true
-        -p:PublishTrimmed=false
-        -p:IncludeNativeLibrariesForSelfExtract=false   # чтобы не раскладывал native-dll рядом
-        --nologo
+    # 3. Publish: self-contained + single-file + сжатие
+    - name: Publish compact EXE
+      shell: pwsh
+      run: |
+        dotnet publish TrayPassGen.csproj `
+          -c Release `
+          -r win-x64 `
+          --self-contained true `
+          /p:PublishSingleFile=true `
+          /p:PublishReadyToRun=false `
+          /p:IncludeNativeLibrariesForSelfExtract=false `
+          /p:DebugType=None `
+          /p:StripSymbols=true `
+          /p:EnableCompressionInSingleFile=true `
+          /p:InvariantGlobalization=true `
+          --nologo
 
-    # Загружаем **только** EXE (+ ICO, если копируешь её рядом)
+    # 4. Загружаем результат (один EXE)
     - name: Upload artefact
       uses: actions/upload-artifact@v4
       with:
