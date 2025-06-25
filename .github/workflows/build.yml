@@ -8,6 +8,7 @@ on:
 jobs:
   build:
     runs-on: windows-latest
+
     steps:
     - name: Checkout
       uses: actions/checkout@v4
@@ -19,22 +20,20 @@ jobs:
 
     - name: Publish (framework-dependent, single-file)
       shell: pwsh
-      run: |
-        dotnet publish TrayPassGen.csproj `
-          -c Release
-          -r win-x64
-          --self-contained false              # framework-dependent (≈ 4 МБ)
-          -p:PublishSingleFile=true
-          -p:EnableCompressionInSingleFile=true
-          -p:PublishReadyToRun=false
-          -p:DebugType=None /p:StripSymbols=true
-          --nologo
+      run: >
+        dotnet publish TrayPassGen.csproj -c Release -r win-x64 --self-contained false
+        /p:PublishSingleFile=true
+        /p:EnableCompressionInSingleFile=true
+        /p:PublishReadyToRun=false
+        /p:DebugType=None
+        /p:StripSymbols=true
+        --nologo
 
     - name: Show EXE size
       shell: pwsh
       run: |
         $exe = Get-ChildItem **/publish/TrayPassGen.exe
-        Write-Host "EXE size: $([math]::Round($exe.Length/1MB,1)) MB"
+        Write-Host "EXE size: $([Math]::Round($exe.Length/1MB,1)) MB"
 
     - name: Upload artefact
       uses: actions/upload-artifact@v4
