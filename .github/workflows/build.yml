@@ -23,7 +23,7 @@ jobs:
       run: >
         dotnet publish TrayPassGen.csproj -c Release -r win-x64 --self-contained false
         /p:PublishSingleFile=true
-        /p:EnableCompressionInSingleFile=true
+        /p:EnableCompressionInSingleFile=false
         /p:PublishReadyToRun=false
         /p:DebugType=None
         /p:StripSymbols=true
