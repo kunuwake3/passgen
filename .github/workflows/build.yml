@@ -1,4 +1,4 @@
-name: Build TrayPassGen (trimmed)
+name: Build TrayPassGen (FD 4 MB)
 
 on:
   push:
@@ -12,42 +12,33 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    # 1. Клонируем репозиторий
     - name: Checkout
       uses: actions/checkout@v4
 
-    # 2. .NET SDK 8.x
-    - name: Setup .NET 8.x
+    - name: Setup .NET 8 SDK
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 8.0.x
+        dotnet-version: 8.0.x                    # SDK 8.x
 
-    # 3. Publish: self-contained + single-file + trim
-    - name: Publish trimmed self-contained EXE
+    - name: Publish framework-dependent single-file
       shell: pwsh
       run: |
         dotnet publish TrayPassGen.csproj `
           -c Release `
           -r win-x64 `
-          --self-contained true `
+          --self-contained false `              # ⬅ без рантайма внутри
           /p:PublishSingleFile=true `
-          /p:PublishTrimmed=true `
-          /p:EnableWindowsFormsTrimSupport=true `
-          /p:PublishReadyToRun=false `
-          /p:IncludeNativeLibrariesForSelfExtract=false `
           /p:EnableCompressionInSingleFile=true `
-          /p:InvariantGlobalization=true `
+          /p:PublishReadyToRun=false `
           /p:DebugType=None /p:StripSymbols=true `
           --nologo
 
-    # 4. Показываем финальный размер
-    - name: Show EXE size
+    - name: Show size
       shell: pwsh
       run: |
-        $exe = Get-ChildItem -Path **/bin/Release/net8.0-windows/win-x64/publish/TrayPassGen.exe
-        Write-Host "Trimmed EXE size: $([Math]::Round($exe.Length/1MB,1)) MB"
+        $exe = Get-ChildItem **/publish/TrayPassGen.exe
+        Write-Host "EXE size: $([math]::Round($exe.Length/1MB,1)) MB"
 
-    # 5. Загружаем artefact
     - name: Upload artefact
       uses: actions/upload-artifact@v4
       with:
