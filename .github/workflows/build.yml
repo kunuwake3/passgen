@@ -1,39 +1,36 @@
-name: Build TrayPassGen (FD 4 MB)
+name: Build TrayPassGen (FD single-file)
 
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+  push:          { branches: [ main ] }
+  pull_request:  { branches: [ main ] }
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: windows-latest
-
     steps:
     - name: Checkout
       uses: actions/checkout@v4
 
-    - name: Setup .NET 8 SDK
+    - name: Setup .NET 8.x
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 8.0.x                    # SDK 8.x
+        dotnet-version: 8.0.x
 
-    - name: Publish framework-dependent single-file
+    - name: Publish (framework-dependent, single-file)
       shell: pwsh
       run: |
         dotnet publish TrayPassGen.csproj `
           -c Release `
           -r win-x64 `
-          --self-contained false `              # ⬅ без рантайма внутри
+          --self-contained false `              # framework-dependent (≈ 4 МБ)
           /p:PublishSingleFile=true `
           /p:EnableCompressionInSingleFile=true `
           /p:PublishReadyToRun=false `
           /p:DebugType=None /p:StripSymbols=true `
           --nologo
 
-    - name: Show size
+    - name: Show EXE size
       shell: pwsh
       run: |
         $exe = Get-ChildItem **/publish/TrayPassGen.exe
